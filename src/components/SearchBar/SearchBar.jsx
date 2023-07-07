@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { ReactComponent as SearchIcon } from '../../icons/search.svg'
 
-export default function SearchBar({ onSubmit, onChange }) {
+export default function SearchBar({ onSubmit }) {
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -20,7 +20,6 @@ export default function SearchBar({ onSubmit, onChange }) {
     }
     setSearchQuery('');
   };
-
 
   return (
     <header className="SearchBar">
@@ -47,5 +46,4 @@ export default function SearchBar({ onSubmit, onChange }) {
 
 SearchBar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func,
 };
