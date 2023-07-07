@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+// import { useRef } from 'react';
+
+// export const btnRef = useRef();
 
 const Button = ({ onClick }) => {
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -31,6 +31,7 @@ export default function App() {
       setImages([]);
       setCurrentPage(1);
       setTotalHits(0)
+      setTheEnd(false);
     }
   };
 
@@ -45,7 +46,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (!searchValue) return;
+    if (!searchValue || theEnd) return;
 
     const getImagesFromAPI = async () => {
       try {
@@ -75,9 +76,10 @@ export default function App() {
 
         const newData = normalizedData(data.data.hits);
 
+        setTheEnd(theEnd);
+
         setImages(prevImages => [...prevImages, ...newData]);
         setTotalHits(data.data.totalHits);
-        setTheEnd(theEnd);
         setIsLoading(false);
         setError(null);
 
@@ -91,10 +93,31 @@ export default function App() {
 
     getImagesFromAPI();
 
-  }, [searchValue, currentPage])
+  }, [searchValue, currentPage, theEnd])
+
+  //! Infinite scroll - intersectionObserver
+  const bottom = useRef(null);
+  useEffect(() => {
+
+    const optionsObserver = {
+      rootMargin: '500px',
+      threshold: 0.1,
+    };
+
+    const callbackObserver = entries => {
+      if (entries[0].isIntersecting && !theEnd) {
+        setTimeout(() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1), 50);
+      }
+    };
+
+    const intersectionObserver = new IntersectionObserver(callbackObserver, optionsObserver);
+    // start observing
+    intersectionObserver.observe(bottom.current);
+
+  }, [searchValue, theEnd]);
+
 
   //================================================================
-
   return (
     <>
       <SearchBar onSubmit={handleSubmit} />
@@ -105,6 +128,7 @@ export default function App() {
       {isLoading && <Loader />}
       {!theEnd && images.length > 0 && <Button onClick={addCurrentPage} />}
       {theEnd && images.length > 0 && <TitleH1 searchValue={"The END"} totalHits={totalHits} />}
+      <div className='bottom' ref={bottom} />
       {hasError && <ErrorTitle error={error} />}
       <ToastContainer />
     </>)
