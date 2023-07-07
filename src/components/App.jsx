@@ -25,7 +25,7 @@ export default function App() {
   const [error, setError] = useState(false);
   const [hasError, setHasError] = useState(false);
 
- const handleSubmit = query => {
+  const handleSubmit = query => {
     if (searchValue !== query) {
       setSearchValue(query);
       setImages([]);
@@ -44,50 +44,50 @@ export default function App() {
     });
   }
 
-  const getImagesFromAPI = async () => {
-    try {
-      setIsLoading(true);
-
-      const data = await getImages(searchValue, currentPage);
-
-      // All right 
-      if (data.data.hits.length && currentPage === 1) {
-        toast.success(<span>Fined {data.data.totalHits} img for value = {searchValue}</span>, {
-          position: toast.POSITION.TOP_LEFT,
-          theme: "colored",
-        });
-      }
-
-      // not found
-      if (!data.data.hits.length) {
-        return toast.warning(`Sorry image('s) not found...`, {
-          position: toast.POSITION.TOP_LEFT,
-          theme: "colored",
-        });
-      }
-
-      //The End
-      let theEnd = false;
-      if (!data.data.hits.length || data.data.hits.length < 12) theEnd = true;
-
-      const newData = normalizedData(data.data.hits);
-
-      setImages(prevImages => [...prevImages, ...newData]);
-      setTotalHits(data.data.totalHits);
-      setTheEnd(theEnd);
-      setIsLoading(false);
-      setError(null);
-
-    } catch (error) {
-      setHasError(true);
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (!searchValue) return;
+
+    const getImagesFromAPI = async () => {
+      try {
+        setIsLoading(true);
+
+        const data = await getImages(searchValue, currentPage);
+
+        // All right 
+        if (data.data.hits.length && currentPage === 1) {
+          toast.success(<span>Fined {data.data.totalHits} img for value = {searchValue}</span>, {
+            position: toast.POSITION.TOP_LEFT,
+            theme: "colored",
+          });
+        }
+
+        // not found
+        if (!data.data.hits.length) {
+          return toast.warning(`Sorry image('s) not found...`, {
+            position: toast.POSITION.TOP_LEFT,
+            theme: "colored",
+          });
+        }
+
+        //The End
+        let theEnd = false;
+        if (!data.data.hits.length || data.data.hits.length < 12) theEnd = true;
+
+        const newData = normalizedData(data.data.hits);
+
+        setImages(prevImages => [...prevImages, ...newData]);
+        setTotalHits(data.data.totalHits);
+        setTheEnd(theEnd);
+        setIsLoading(false);
+        setError(null);
+
+      } catch (error) {
+        setHasError(true);
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     getImagesFromAPI();
 
