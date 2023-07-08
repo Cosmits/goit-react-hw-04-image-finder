@@ -114,11 +114,11 @@ export default function App() {
       observer.observe(observerTarget.current);
     }
 
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
+    // return () => {
+    //   if (observerTarget.current) {
+    //     observer.unobserve(observerTarget.current);
+    //   }
+    // };
   }, [observerTarget]);
 
 
