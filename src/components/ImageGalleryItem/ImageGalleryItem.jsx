@@ -1,6 +1,12 @@
-import Modal from 'components/Modal/Modal';
-import PropTypes from 'prop-types'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+
+import Modal from 'components/Modal/Modal';
+
+import {
+  StyledImageGalleryItem,
+  StyledImageGalleryItemImage
+} from './ImageGalleryItem.styled';
 
 export default function ImageGalleryItem(props) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -13,8 +19,8 @@ export default function ImageGalleryItem(props) {
   const { image: { tags, webformatURL, largeImageURL } } = props;
   
   return (
-    <li className="ImageGalleryItem">
-      <img className="ImageGalleryItem-image"
+    <StyledImageGalleryItem>
+      <StyledImageGalleryItemImage
         src={webformatURL}
         alt={tags}
         onClick={toggleModal} />
@@ -25,7 +31,7 @@ export default function ImageGalleryItem(props) {
           onCloseModal={toggleModal}
         />
       )}
-    </li>
+    </StyledImageGalleryItem>
   )
 
 }

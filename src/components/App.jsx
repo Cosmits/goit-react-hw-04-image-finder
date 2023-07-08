@@ -10,6 +10,7 @@ import ErrorTitle from './ErrorTitle';
 import TitleH1 from './TitleH1';
 
 import { getImages } from 'services/get_images';
+import { StyledApp } from './App.styled';
 
 export default function App() {
 
@@ -124,7 +125,7 @@ export default function App() {
 
   //================================================================
   return (
-    <>
+    <StyledApp>
       <SearchBar onSubmit={handleSubmit} />
       {images.length > 0 && <ImageGallery
         images={images}
@@ -136,5 +137,5 @@ export default function App() {
       <div className='bottom' ref={observerTarget} />
       {hasError && <ErrorTitle error={error} />}
       <ToastContainer />
-    </>)
+    </StyledApp>)
 }

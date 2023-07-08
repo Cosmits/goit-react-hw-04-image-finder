@@ -1,8 +1,9 @@
+import { StyledContainer } from 'components/TitleH1/TitleH1.styled'
 import { RotatingLines } from 'react-loader-spinner'
 
 export default function Loader() {
   return (
-    <div className="Container">
+    <StyledContainer>
       <RotatingLines
         strokeColor={'#3f51b5'}
         strokeWidth="5"
@@ -10,6 +11,6 @@ export default function Loader() {
         width="196"
         visible={true}
       />
-    </div>
+    </StyledContainer>
   )
 }

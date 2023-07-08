@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { StyledModal, StyledOverlay } from './Modal.styled';
 
 export default function Modal({ tags, largeImageURL, onCloseModal }) {
 
@@ -18,9 +19,9 @@ export default function Modal({ tags, largeImageURL, onCloseModal }) {
         onCloseModal();
       }
     };
-  
+
     window.addEventListener('keydown', handleKeyDown);
-   
+
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -30,11 +31,11 @@ export default function Modal({ tags, largeImageURL, onCloseModal }) {
 
   //================================================================
   return (
-    <div className="Overlay" onClick={handleOverlayClick}>
-      <div className="Modal">
+    <StyledOverlay onClick={handleOverlayClick}>
+      <StyledModal>
         <img src={largeImageURL} alt={tags} />
-      </div>
-    </div>
+      </StyledModal>
+    </StyledOverlay>
   );
 
 }
