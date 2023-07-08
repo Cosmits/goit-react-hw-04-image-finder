@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchBar from './SearchBar';
 import ImageGallery from './ImageGallery';
 import Loader from './Loader';
-import Button from './Button/Button';
+// import Button from './Button/Button';
 import ErrorTitle from './ErrorTitle';
 import TitleH1 from './TitleH1';
 
@@ -35,9 +35,9 @@ export default function App() {
     }
   };
 
-  const addCurrentPage = () => {
-    setCurrentPage(prevCurrentPage => prevCurrentPage + 1);
-  }
+  // const addCurrentPage = () => {
+  //   setCurrentPage(prevCurrentPage => prevCurrentPage + 1);
+  // }
 
   const normalizedData = data => {
     return data.map(({ id, tags, webformatURL, largeImageURL, userImageURL }) => {
@@ -46,7 +46,10 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (!searchValue || theEnd) return;
+    if (!searchValue || theEnd) {
+      setIsLoading(false);
+      return;
+    }
 
     const getImagesFromAPI = async () => {
       try {
@@ -96,25 +99,27 @@ export default function App() {
   }, [searchValue, currentPage, theEnd])
 
   //! Infinite scroll - intersectionObserver
-  const bottom = useRef(null);
+  const observerTarget = useRef(null);
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting) {
+          setCurrentPage(prevCurrentPage => prevCurrentPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
 
-    const optionsObserver = {
-      rootMargin: '500px',
-      threshold: 0.1,
-    };
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
 
-    const callbackObserver = entries => {
-      if (entries[0].isIntersecting && !theEnd) {
-        setTimeout(() => setCurrentPage(prevCurrentPage => prevCurrentPage + 1), 50);
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
       }
     };
-
-    const intersectionObserver = new IntersectionObserver(callbackObserver, optionsObserver);
-    // start observing
-    intersectionObserver.observe(bottom.current);
-
-  }, [searchValue, theEnd]);
+  }, [observerTarget]);
 
 
   //================================================================
@@ -126,9 +131,9 @@ export default function App() {
         searchValue={searchValue}
         totalHits={totalHits} />}
       {isLoading && <Loader />}
-      {!theEnd && images.length > 0 && <Button onClick={addCurrentPage} />}
+      {/* {!theEnd && images.length > 0 && <Button onClick={addCurrentPage} />} */}
       {theEnd && images.length > 0 && <TitleH1 searchValue={"The END"} totalHits={totalHits} />}
-      <div className='bottom' ref={bottom} />
+      <div className='bottom' ref={observerTarget} />
       {hasError && <ErrorTitle error={error} />}
       <ToastContainer />
     </>)
