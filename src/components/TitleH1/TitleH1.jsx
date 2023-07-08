@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 
+import { StyledContainer, StyledTitleH1 } from './TitleH1.styled';
+
 export default function TitleH1({ searchValue, totalHits }) {
   return (
-    <div className="Container">
-      <h1 className="TitleH1"> {searchValue}
+    <StyledContainer>
+      <StyledTitleH1> {searchValue}
         <sup style={{ fontSize: "initial" }}> {totalHits} img</sup>
-      </h1>
-    </div>
+      </StyledTitleH1>
+    </StyledContainer>
   )
 }
 

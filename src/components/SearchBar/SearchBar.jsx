@@ -2,6 +2,12 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import { ReactComponent as SearchIcon } from '../../icons/search.svg'
+import {
+  StyledSearchBar,
+  StyledSearchForm,
+  StyledSearchFormButton,
+  StyledSearchFormInput
+} from './SearchBar.styled';
 
 export default function SearchBar({ onSubmit }) {
 
@@ -22,15 +28,13 @@ export default function SearchBar({ onSubmit }) {
   };
 
   return (
-    <header className="SearchBar">
-      <form className="SearchForm" onSubmit={handleSubmit}>
-        <button type="submit" className="SearchForm-button">
-          {/* <span className="SearchForm-button-label">Search</span> */}
+    <StyledSearchBar>
+      <StyledSearchForm onSubmit={handleSubmit}>
+        <StyledSearchFormButton type="submit">
           <SearchIcon />
-        </button>
+        </StyledSearchFormButton>
 
-        <input
-          className="SearchForm-input"
+        <StyledSearchFormInput
           type="text"
           autoComplete="off"
           autoFocus
@@ -39,8 +43,8 @@ export default function SearchBar({ onSubmit }) {
           value={searchQuery}
           onChange={handleChange}
         />
-      </form>
-    </header>
+      </StyledSearchForm>
+    </StyledSearchBar>
   )
 }
 
